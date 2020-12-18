@@ -16,8 +16,12 @@ app.use(helmet());
 app.use(cors());
 
 app.get('/', (req, res) => {
-  res.send('Hello, boilerplate!');
+  res.send('Hello, movierec!');
 });
+
+app.use('/api/movies', moviesRouter);
+app.use('/api/posts', postsRouter);
+app.use('/api/votes', votesRouter);
 
 app.use(function errorHandler(error, req, res, next) {
   let response
