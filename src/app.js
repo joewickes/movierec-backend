@@ -1,9 +1,13 @@
+// Dependencies
 require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
-const { NODE_ENV } = require('./config')
+
+// Local
+const { NODE_ENV } = require('./config');
+const postsRouter = require('./posts/posts-router');
 
 const app = express();
 
@@ -19,9 +23,9 @@ app.get('/', (req, res) => {
   res.send('Hello, movierec!');
 });
 
-app.use('/api/movies', moviesRouter);
+// app.use('/api/movies', moviesRouter);
 app.use('/api/posts', postsRouter);
-app.use('/api/votes', votesRouter);
+// app.use('/api/votes', votesRouter);
 
 app.use(function errorHandler(error, req, res, next) {
   let response
