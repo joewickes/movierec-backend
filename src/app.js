@@ -10,6 +10,7 @@ const { NODE_ENV } = require('./config');
 const postsRouter = require('./posts/posts-router');
 const moviesRouter = require('./movies/movies-router');
 const usersRouter = require('./users/users-router');
+const authRouter = require('./auth/auth-router');
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.get('/', (req, res) => {
 app.use('/api/movies', moviesRouter);
 app.use('/api/posts', postsRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/auth', authRouter);
 // app.use('/api/votes', votesRouter);
 
 app.use(function errorHandler(error, req, res, next) {
