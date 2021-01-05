@@ -6,23 +6,7 @@ VALUES
 ('user4', 'user4@gmail.com', 'asdfasdf'),
 ('user5', 'user5@gmail.com', 'asdfasdf');
 
--- INSERT INTO posts (title, description, movie_id, votecount, user_id)
--- VALUES
--- ('post 1', 'A description of a movie', 1, 1, 1),
--- ('post 2', 'A description of a movie', 2, 2, 2),
--- ('post 3', 'A description of a movie', 3, 3, 3),
--- ('post 4', 'A description of a movie', 4, 4, 4),
--- ('post 5', 'A description of a movie', 5, 5, 5);
-
--- INSERT INTO votes (userid, value, post_id)
--- VALUES
--- (1, 2, 1),
--- (2, 3, 2),
--- (3, 0, 3),
--- (4, 1, 4),
--- (5, 4, 5);
-
-INSERT INTO movies(id, original_title, year, genre) VALUES
+INSERT INTO movies(film_id, original_title, year, genre) VALUES
 ('tt8206668','Bad Education','2019','Biography, Comedy, Crime'),
 ('tt0983946','Fantasy Island','2020','Action, Adventure, Fantasy'),
 ('tt10003008','The Rental','2020','Horror, Thriller'),
@@ -5023,3 +5007,19 @@ INSERT INTO movies(id, original_title, year, genre) VALUES
 ('tt3079016','We''ll Never Have Paris','2014','Comedy, Romance'),
 ('tt3081268','Reaper','2014','Crime, Horror, Sci-Fi'),
 ('tt3081722','God Is Bad at Bowling','2014','Comedy');
+
+INSERT INTO posts (title, description, movie_id, user_id)
+VALUES
+('post 1', 'A description of a movie', 1, 1),
+('post 2', 'A description of a movie', 2, 2),
+('post 3', 'A description of a movie', 3, 3),
+('post 4', 'A description of a movie', 4, 4),
+('post 5', 'A description of a movie', 5, 5);
+
+INSERT INTO votes (userid, value, post_id)
+VALUES
+(1, 2, 1),
+(2, 3, 2),
+(3, 0, 3),
+(4, 1, 4),
+(5, 4, 5);
