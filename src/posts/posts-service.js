@@ -1,6 +1,3 @@
-// Dependencies
-const xss = require('xss'); // For sterilizing strings
-
 const PostsService = {
   getPosts(database, limit, offset) { // Knex instance to the database
     return database 

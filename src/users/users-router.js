@@ -18,35 +18,48 @@ usersRouter
     console.log(req.body);
 
     // Parse Username
-    const parseUN = Buffer
+    const parsedUN = Buffer
       .from(req.body.username, 'base64')
       .toString()
     ;
 
     // Parse Email
-    const parseEmail = Buffer
+    const parsedEmail = Buffer
       .from(req.body.email, 'base64')
       .toString()
     ;
 
     // Parse Password
-    const parsePwd = Buffer
+    const parsedPwd = Buffer
       .from(req.body.password, 'base64')
       .toString()
     ;
 
     // Make sure username doesn't exist in DB
-    UsersService.findUser(req.app.get('db'), parseUN)
+    UsersService.findUser(req.app.get('db'), parsedUN)
       .then(foundUser => {
         if (foundUser) {
           console.log('Username already taken');
           return res.status(400).json({ error: 'Username already taken' });
         } else {
-          bcrypt.hash(parsePwd, 12)
+
+          const r = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&])[\S]+/;
+
+          if (parsedPwd.length < 8) {
+            return res.status(400).json({error: 'Password must be at least 8 characters'});
+          } else if (parsedPwd.length > 72) {
+            return res.status(400).json({error: 'Password must be less than 72 characters'}); 
+          } else if (parsedPwd.startsWith(' ') || parsedPwd.endsWith(' ')) {
+            return res.status(400).json({error: 'Password must not start or end with empty spaces'}); 
+          } else if (!r.test(parsedPwd)) {
+            return res.status(400).json({error: 'Password must have at least one upper case, lower case, number and special character'}); 
+          }
+
+          bcrypt.hash(parsedPwd, 12)
             .then(epass => {
               const newData = {
-                username: parseUN,
-                email: parseEmail,
+                username: parsedUN,
+                email: parsedEmail,
                 password: epass,
               }
 
