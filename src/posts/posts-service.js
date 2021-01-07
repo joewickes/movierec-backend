@@ -1,3 +1,5 @@
+const usersRouter = require("../users/users-router")
+
 const PostsService = {
   // getPosts(database, limit, offset) { // Knex instance to the database
   //   return database 
@@ -6,19 +8,89 @@ const PostsService = {
       
   //   ;
   // },
-  getPosts(database, limit, offset) { // Knex instnce to the database
+  getPosts(database, userId, limit, offset) { // Knex instnce to the database
+    if (!userId) {
+      userId = 'null';
+    }
+
     return database
-      .select('posts.id', 'movies.original_title as title', 'users.username')
-      .sum({votes: 'votes.value'})
-      .groupBy('posts.id', 'movies.original_title', 'users.username')
-      .from('posts')
-      .innerJoin('users', 'posts.user_id', 'users.id')
-      .innerJoin('movies', 'posts.movie_id', 'movies.id')
-      .innerJoin('votes', 'posts.id', 'votes.post_id')
-      .orderBy('posts.date_created', 'desc') // Sorts by most recent date_created
-      .limit(limit) // Limits the results to the first 10
-      .offset(offset) // Offsets which set of results is seen 1-10, 11-20, etc.
+      .raw(`
+        select 
+          votes
+          , title
+          , username
+          , date_created 
+          , post_id as id
+          ,case when (
+            select votes.value 
+            from votes 
+              inner join posts on votes.post_id = posts.id 
+            where 
+              votes.userid = ${userId}
+              and posts.movie_id = n.movie_id
+            ) is not null
+            then (
+              select value
+              from votes 
+                inner join posts on votes.post_id = posts.id
+              where 
+                votes.userid = ${userId}
+                and posts.movie_id  = n.movie_id
+            ) 
+            else null end as myvote
+        from (	
+          select 
+            SUM(v.value) as votes
+            ,m.original_title as title
+            ,m.id as movie_id
+            ,u.username
+            ,p.date_created 
+            ,p.id as post_id
+          from posts p
+            inner join movies m on p.movie_id = m.id 
+            inner join votes v on p.id = v.post_id 
+            inner join users u on p.user_id  = u.id 
+          group by m.original_title , u.username, m.id, p.date_created, p.id
+        ) n
+        order by n.date_created
+        limit ${limit} offset ${offset}`
+      )
   },
+  // getVoteTotals(database, userId) {
+  //   return database
+  //     .raw(`
+  //       select votes, original_title, username, 
+  //         case when (
+  //           select votes.value 
+  //           from votes 
+  //             inner join posts on votes.post_id = posts.id 
+  //           where 
+  //             votes.userid = ${userId}
+  //             and posts.movie_id = n.movie_id
+  //           ) is not null
+  //           then (
+  //             select value
+  //             from votes 
+  //               inner join posts on votes.post_id = posts.id
+  //             where 
+  //               votes.userid = ${userId}
+  //               and posts.movie_id  = n.movie_id
+  //           ) 
+  //           else null end as myvote
+  //         from (	
+  //           select 
+  //             SUM(v.value) as votes
+  //             ,m.original_title
+  //             ,m.id as movie_id
+  //             ,u.username 
+  //           from posts p
+  //             inner join movies m on p.movie_id = m.id 
+  //             inner join votes v on p.id = v.post_id 
+  //             inner join users u on p.user_id  = u.id 
+  //           group by m.original_title , u.username, m.id
+  //         ) n`
+  //       )
+  // },
   addPost(database, newPostObj) {
     return database
       .insert(newPostObj) // Insert the new post object
@@ -27,9 +99,29 @@ const PostsService = {
   },
   searchPostsByTitle(database, title, limit, offset) {
     return database 
+      .select('posts.id', 'movies.original_title as title', 'users.username')
+      .sum({votes: 'votes.value'})
+      .groupBy('posts.id', 'movies.original_title', 'users.username')
       .from('posts') // Queries movies table
-      .select('*') // Selects all movies
-      .where(database.raw(`LOWER(title) LIKE LOWER('%${title}%')`)) // Searches with lowercase title against lowercase param
+      .innerJoin('users', 'posts.user_id', 'users.id')
+      .innerJoin('movies', 'posts.movie_id', 'movies.id')
+      .innerJoin('votes', 'posts.id', 'votes.post_id')
+      .where(database.raw(`LOWER(movies.original_title) LIKE LOWER('%${title}%')`)) // Searches with lowercase title against lowercase param
+      .orderBy('movies.original_title', 'asc') // Sorts by most recent date_created
+      .limit(limit) // Limits the results to the first 10
+      .offset(offset) // Offsets which set of results is seen 1-10, 11-20, etc.
+  },
+  searchPostsByGenre(database, genre, limit, offset) {
+    return database
+      .select('posts.id', 'movies.original_title as title', 'users.username')
+      .sum({votes: 'votes.value'})
+      .groupBy('posts.id', 'movies.original_title', 'users.username')
+      .from('posts') // Queries movies table
+      .innerJoin('users', 'posts.user_id', 'users.id')
+      .innerJoin('movies', 'posts.movie_id', 'movies.id')
+      .innerJoin('votes', 'posts.id', 'votes.post_id')
+      .where(database.raw(`LOWER(movies.genre) LIKE LOWER('%${genre}%')`)) // Searches with lowercase title against lowercase param
+      .orderByRaw('sum(votes.value) DESC')
       .limit(limit) // Limits the results to the first 10
       .offset(offset) // Offsets which set of results is seen 1-10, 11-20, etc.
   }

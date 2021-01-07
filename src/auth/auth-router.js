@@ -40,7 +40,7 @@ authRouter
                   if (comparedRes) {
                     const createdToken = AuthService.createToken(foundUser.username, {user_id: foundUser.id});
                     console.log(createdToken);
-                    return res.status(200).json(createdToken);
+                    return res.status(200).json({createdToken: createdToken, userId: foundUser.id});
                   }
                   
                 });
