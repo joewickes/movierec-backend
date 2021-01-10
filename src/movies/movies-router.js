@@ -12,7 +12,6 @@ const MoviesService = require('./movies-service')
 moviesRouter
   .route('/')
   .get((req, res, next) => {
-    console.log(req.query.search);
     MoviesService.getMovies(req.app.get('db'), req.query.search, 10, 0)
       .then(movies => {
         return res.json(movies);

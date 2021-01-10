@@ -14,8 +14,6 @@ authRouter
   .route('/')
   .post(jsonBodyParser, (req, res, next) => {
 
-    console.log(req.body);
-
     // Parsed Username
     const parsedUN = Buffer
       .from(req.body.username, 'base64')
@@ -28,18 +26,14 @@ authRouter
       .toString()
     ;
 
-    console.log('creds on creds', parsedUN, parsedPwd);
-
     // Make sure username exists in DB FIX THIS
     AuthService.getUser(req.app.get('db'), parsedUN)
       .then(foundUser => {
         if (foundUser) {
-          console.log('Found User =>', foundUser);
               AuthService.comparePasswords(parsedPwd, foundUser.password)
                 .then(comparedRes => {
                   if (comparedRes) {
                     const createdToken = AuthService.createToken(foundUser.username, {user_id: foundUser.id});
-                    console.log(createdToken);
                     return res.status(200).json({createdToken: createdToken, userId: foundUser.id});
                   }
                   

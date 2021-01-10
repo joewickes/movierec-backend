@@ -13,10 +13,8 @@ postsRouter
   .route('/')
   .post(jsonBodyParser, (req, res, next) => {
     if (req.body.where === 'homePageGet') {
-      console.log(req.body)
       PostsService.getPosts(req.app.get('db'), req.body.userId, 10, parseInt(req.body.offset))
         .then(posts => {
-          console.log('returned posts from GET on HOME PAGE', posts);
           return res.json(posts.rows);
         })
         .catch(next)
@@ -28,7 +26,6 @@ postsRouter
         return res.status(400).json({error: 'Invalid title search'});
       }
 
-      console.log('title in req body', req.body.title)
       return PostsService.searchPostsByTitle(req.app.get('db'), req.body.title, 10, 0)
         .then(postRes => {
           if (postRes.length === 0) {
@@ -42,7 +39,6 @@ postsRouter
     }
 
     if (req.body.where === 'homePageFilter') {
-      console.log('genre in req body', req.body.genre)
       return PostsService.searchPostsByGenre(req.app.get('db'), req.body.genre, 10, 0)
         .then(postRes => {
           res.json(postRes);

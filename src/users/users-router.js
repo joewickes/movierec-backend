@@ -15,8 +15,6 @@ usersRouter
   .route('/')
   .post(jsonBodyParser, (req, res, next) => {
 
-    console.log(req.body);
-
     // Parse Username
     const parsedUN = Buffer
       .from(req.body.username, 'base64')
@@ -39,7 +37,6 @@ usersRouter
     UsersService.findUser(req.app.get('db'), parsedUN)
       .then(foundUser => {
         if (foundUser) {
-          console.log('Username already taken');
           return res.status(400).json({ error: 'Username already taken' });
         } else {
 
@@ -66,7 +63,6 @@ usersRouter
               // POST USER USERNAME AND PASSWORD AND DATE CREATED
               UsersService.addUser(req.app.get('db'), newData)
               .then((result) => {
-                console.log('Added USER', result);
                 return res.status(201).end();
               })
             })
