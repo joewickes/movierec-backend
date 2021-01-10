@@ -4,6 +4,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
+var enforce = require('express-sslify');
 
 // Local
 const { NODE_ENV } = require('./config');
@@ -19,7 +20,7 @@ const morganOption = (NODE_ENV === 'production')
   ? 'tiny'
   : 'common';
 
-app.use(morgan(morganOption));
+app.use(morgan(morganOption), enforce.HTTPS());
 app.use(helmet());
 app.use(cors());
 
