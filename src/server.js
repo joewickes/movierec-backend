@@ -5,7 +5,7 @@ const knex = require('knex');
 const app = require('./app');
 
 // Config Files
-const { PORT, DATABASE_URL } = require('./config')
+const { PORT, DATABASE_URL } = require('./config');
 
 // Assign knex instance to db
 const db = knex({
@@ -14,7 +14,7 @@ const db = knex({
 })
 
 // Connect the db instance to app.js to use with express
-app.set('db', db)
+app.set('db', db);
 
 app.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`);
