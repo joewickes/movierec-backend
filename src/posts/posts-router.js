@@ -13,7 +13,7 @@ const PostsService = require('./posts-service')
 postsRouter
   .route('/')
   .get((req, res, next) => {
-    return res.send(req.app.get('db'));
+    return res.send((req.app.get('db')).toString());
   })
   .post(jsonBodyParser, (req, res, next) => {
     
