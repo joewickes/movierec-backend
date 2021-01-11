@@ -1,4 +1,5 @@
 // Dependencies
+const { EROFS } = require('constants');
 const express = require('express');
 const path = require('path');
 
@@ -15,6 +16,7 @@ postsRouter
     return res.send("YEAAAAH");
   })
   .post(jsonBodyParser, (req, res, next) => {
+    throw new Error('Posts ERRRRRRROR');
     if (req.body.where === 'homePageGet') {
       PostsService.getPosts(req.app.get('db'), req.body.userId, 10, parseInt(req.body.offset))
         .then(posts => {
