@@ -16,11 +16,11 @@ postsRouter
     return res.send("YEAAAAH");
   })
   .post(jsonBodyParser, (req, res, next) => {
-    return res.json(req.body);
+    
     if (req.body.where === 'homePageGet') {
       PostsService.getPosts(req.app.get('db'), req.body.userId, 10, parseInt(req.body.offset))
         .then(posts => {
-          return res.json(posts.rows);
+          return res.json(posts);
         })
         .catch(next)
       ;
