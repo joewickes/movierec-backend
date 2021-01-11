@@ -16,7 +16,7 @@ postsRouter
     return res.send("YEAAAAH");
   })
   .post(jsonBodyParser, (req, res, next) => {
-    throw new Error('Posts ERRRRRRROR');
+    return res.json(req.body);
     if (req.body.where === 'homePageGet') {
       PostsService.getPosts(req.app.get('db'), req.body.userId, 10, parseInt(req.body.offset))
         .then(posts => {
