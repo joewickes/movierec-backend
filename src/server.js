@@ -6,6 +6,7 @@ const app = require('./app');
 
 // Config Files
 const { PORT, DATABASE_URL } = require('./config');
+console.log(DATABASE_URL);
 
 // Assign knex instance to db
 const db = knex({
