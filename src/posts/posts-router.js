@@ -13,11 +13,12 @@ const PostsService = require('./posts-service')
 postsRouter
   .route('/')
   .get((req, res, next) => {
-    return res.send("YEAAAAH");
+    return res.send(req.app.get('db'));
   })
   .post(jsonBodyParser, (req, res, next) => {
     
     if (req.body.where === 'homePageGet') {
+      return res.send(req.app.get('db'));
       PostsService.getPosts(req.app.get('db'), req.body.userId, 10, parseInt(req.body.offset))
         .then(posts => {
           return res.json(posts);
