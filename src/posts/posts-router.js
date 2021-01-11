@@ -1,7 +1,7 @@
 // Dependencies
-const { EROFS } = require('constants');
 const express = require('express');
 const path = require('path');
+require('dotenv').config();
 
 // Use express methods for route and JSON parsing
 const postsRouter = express.Router()
@@ -14,7 +14,7 @@ postsRouter
   .route('/')
   .get((req, res, next) => {
     console.log('Got here in posts router')
-    return res.send('POST GET RESULT hereee');
+    return res.send('POST GET RESULT hereee', process.env.DATABASE_URL);
   })
   .post(jsonBodyParser, (req, res, next) => {
     console.log('made it into post')
