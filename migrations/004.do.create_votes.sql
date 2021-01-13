@@ -5,3 +5,4 @@ CREATE TABLE IF NOT EXISTS votes (
   post_id INTEGER REFERENCES posts(id) NOT NULL,
   date_created TIMESTAMPTZ DEFAULT now() NOT NULL
 );
+

@@ -13,10 +13,8 @@ const PostsService = require('./posts-service')
 postsRouter
   .route('/')
   .get((req, res, next) => {
-    console.log('Got here in posts router');
   })
   .post(jsonBodyParser, (req, res, next) => {
-    console.log('made it into post');
     if (req.body.where === 'homePageGet') {
 
       PostsService.getPosts(req.app.get('db'), req.body.userId, 10, parseInt(req.body.offset))
