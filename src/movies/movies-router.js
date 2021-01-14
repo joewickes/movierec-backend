@@ -43,4 +43,14 @@ moviesRouter
       .catch(next);
   })
 
+  moviesRouter
+    .route('/:movie_id')
+    .get((req, res, next) => {
+      MoviesService.getSingleMovie(req.app.get('db'), req.params.movie_id)
+        .then(response => {
+          console.log('movie id single response', response)
+          res.json(response[0]);
+        })
+    })
+
 module.exports = moviesRouter;

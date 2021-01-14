@@ -12,8 +12,6 @@ const PostsService = require('./posts-service')
 
 postsRouter
   .route('/')
-  .get((req, res, next) => {
-  })
   .post(jsonBodyParser, (req, res, next) => {
     if (req.body.where === 'homePageGet') {
 
@@ -74,5 +72,20 @@ postsRouter
     //   })
     //   .catch(next);
   })
+
+  postsRouter
+    .route('/:post_id')
+    .get((req, res, next) => {
+      console.log(`grabbing that post at ${typeof req.params.post_id} ${req.params.post_id} now`)
+      PostsService.getSinglePost(req.app.get('db'), req.params.post_id)
+        .then(response => {
+          if (response.length === 0) {
+            console.log('no matching posts');
+            res.status(404).json({message: 'No matching posts'})
+          }
+        })
+        .catch(next)
+      ;
+    })
 
 module.exports = postsRouter;

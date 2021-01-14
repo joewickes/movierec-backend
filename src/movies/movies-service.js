@@ -11,6 +11,12 @@ const MoviesService = {
       .offset(offset) // Offsets which set of results is seen 1-10, 11-20, etc.
     ;
   },
+  getSingleMovie(database, id) {
+    return database
+      .from('movies')
+      .select('id', 'original_title', 'year')
+      .where('id', '=', `${id}`)
+  },
   addMovie(database, newMovieObj) {
     return database
       .insert(newMovieObj) // Insert the new movie object

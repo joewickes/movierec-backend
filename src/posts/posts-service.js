@@ -91,6 +91,13 @@ const PostsService = {
   //         ) n`
   //       )
   // },
+  getSinglePost(database, id) {
+    console.log('movieid for seeing if it exists', id);
+    return database
+      .select('*')
+      .from('posts')
+      .where('posts.movie_id', '=', `${id}`)
+  },
   addPost(database, newPostObj) {
     return database
       .insert(newPostObj) // Insert the new post object
