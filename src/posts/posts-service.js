@@ -52,7 +52,7 @@ const PostsService = {
             inner join users u on p.user_id  = u.id 
           group by m.original_title , u.username, m.id, p.date_created, p.id
         ) n
-        order by n.date_created
+        order by n.date_created desc
         limit ${limit} offset ${offset}`
       )
   },
@@ -102,7 +102,7 @@ const PostsService = {
     return database
       .insert(newPostObj) // Insert the new post object
       .into('posts') // into the posts table
-      .returning('*') // returning the object
+      .returning('id')
   },
   searchPostsByTitle(database, title, limit, offset) {
     return database 

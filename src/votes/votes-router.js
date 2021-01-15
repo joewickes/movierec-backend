@@ -39,7 +39,6 @@ votesRouter
       })
       .catch(next);
     } else if (req.body.type === 'getVoteId') {
-      console.log('getting the vote id now boss', userid, post_id)
       VotesService.findVoteId(req.app.get('db'), userid, post_id)
         .then(returned => {
           console.log(returned);
@@ -61,7 +60,6 @@ votesRouter
         })
     })
     .patch(jsonBodyParser, (req, res, next) => {
-      console.log('HERE YA GO... at', req.params.vote_id, req.body);
       VotesService.updateVote(req.app.get('db'), req.params.vote_id, req.body)
         .then(() => {
           res.status(204).end();

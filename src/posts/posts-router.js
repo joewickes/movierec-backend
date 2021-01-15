@@ -9,6 +9,8 @@ const jsonBodyParser = express.json()
 
 // Posts service object
 const PostsService = require('./posts-service')
+const votesServie = require('./../votes/votes-service');
+const VotesService = require('./../votes/votes-service');
 
 postsRouter
   .route('/')
@@ -50,27 +52,26 @@ postsRouter
       ;
     }
 
-    // // Get data from request body
-    // const {title, description, movie_id, votecount, user_id} = req.body;
-
-    // // Put data in a new post object
-    // const newPostObj = {title, description, movie_id, votecount, user_id};
-    
-    // // Validate necessary keys
-
-    // // Insert post
-    // PostsService.addPost(
-    //   req.app.get('db'),
-    //   newPostObj
-    // )
-    //   // When successful, update state to reflect added post
-    //   .then(post => {
-    //     res
-    //       .status(201)
-    //       .location(path.posix.join(req.originalUrl, `/${post.id}`))
-    //       .json(post)
-    //   })
-    //   .catch(next);
+    if (req.body.where === 'addNewPost') {
+      console.log('new Post Obj', req.body.newPostObj)
+      return PostsService.addPost(req.app.get('db'), req.body.newPostObj)
+        .then(response => {
+          console.log('add the post successfully', response)
+          const voteObj = {
+            userid: req.body.newPostObj.user_id,
+            value: 1,
+            post_id: response[0],
+          }
+          
+          VotesService.addVote(req.app.get('db'), voteObj)
+            .then(() => {
+              res.status(201).end();
+            })
+          
+        })
+        .catch(next)
+      ;
+    }
   })
 
   postsRouter
