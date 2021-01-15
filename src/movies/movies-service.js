@@ -21,7 +21,7 @@ const MoviesService = {
     return database
       .insert(newMovieObj) // Insert the new movie object
       .into('movies') // into the movies table
-      .returning('*') // returning the object
+      .returning('id') // returning the object
   }
   
 }
