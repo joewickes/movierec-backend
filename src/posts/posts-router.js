@@ -9,7 +9,6 @@ const jsonBodyParser = express.json()
 
 // Posts service object
 const PostsService = require('./posts-service')
-const votesServie = require('./../votes/votes-service');
 const VotesService = require('./../votes/votes-service');
 
 postsRouter

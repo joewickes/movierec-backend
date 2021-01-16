@@ -20,7 +20,8 @@ votesRouter
     ;
   })
   .post(jsonBodyParser, (req, res, next) => {
-    console.log('postING', req.body.voteData);
+    console.log('postING THIS', req.body);
+    console.log(req.body.voteData.value)
     const { value, post_id, userid } = req.body.voteData;
 
     // Put data in a new vote object

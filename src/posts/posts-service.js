@@ -12,49 +12,51 @@ const PostsService = {
     if (!userId) {
       userId = 'null';
     }
+    console.log(userId, limit, offset)
+    console.log('starting the crazy query');
 
     return database
       .raw(`
         select 
-          votes
-          , title
-          , username
-          , date_created 
-          , post_id as id
-          ,case when (
-            select votes.value 
+        votes
+        , title
+        , username
+        , date_created 
+        , post_id as id
+        ,case when (
+          select votes.value 
+          from votes 
+            inner join posts on votes.post_id = posts.id 
+          where 
+            votes.userid = ${userId}
+            and posts.movie_id = n.movie_id
+          ) is not null
+          then (
+            select value
             from votes 
-              inner join posts on votes.post_id = posts.id 
+              inner join posts on votes.post_id = posts.id
             where 
               votes.userid = ${userId}
-              and posts.movie_id = n.movie_id
-            ) is not null
-            then (
-              select value
-              from votes 
-                inner join posts on votes.post_id = posts.id
-              where 
-                votes.userid = ${userId}
-                and posts.movie_id  = n.movie_id
-            ) 
-            else null end as myvote
-        from (	
-          select 
-            SUM(v.value) as votes
-            ,m.original_title as title
-            ,m.id as movie_id
-            ,u.username
-            ,p.date_created 
-            ,p.id as post_id
-          from posts p
-            inner join movies m on p.movie_id = m.id 
-            inner join votes v on p.id = v.post_id 
-            inner join users u on p.user_id  = u.id 
-          group by m.original_title , u.username, m.id, p.date_created, p.id
-        ) n
-        order by n.date_created desc
-        limit ${limit} offset ${offset}`
-      )
+              and posts.movie_id  = n.movie_id
+          ) 
+          else null end as myvote
+      from (	
+        select 
+          SUM(v.value) as votes
+          ,m.original_title as title
+          ,m.id as movie_id
+          ,u.username
+          ,p.date_created 
+          ,p.id as post_id
+        from posts p
+          inner join movies m on p.movie_id = m.id 
+          inner join votes v on p.id = v.post_id 
+          inner join users u on p.user_id  = u.id 
+        group by m.original_title , u.username, m.id, p.date_created, p.id
+      ) n
+      order by n.date_created
+      limit ${limit} offset ${offset}
+    `)
   },
   // getVoteTotals(database, userId) {
   //   return database
