@@ -33,6 +33,8 @@ votesRouter
 
       // When successful, update state to reflect added vote
       .then(vote => {
+
+        console.log('vote to send back', vote);
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${vote.id}`))
