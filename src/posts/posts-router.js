@@ -84,6 +84,9 @@ postsRouter
           if (response.length === 0) {
             console.log('no matching posts');
             res.status(404).json({message: 'No matching posts'})
+          } else {
+            console.log(response);
+            res.status(200).json(response)
           }
         })
         .catch(next)

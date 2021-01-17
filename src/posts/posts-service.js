@@ -177,7 +177,7 @@ const PostsService = {
         where LOWER(m.genre) LIKE LOWER('%${genre}%')
         group by m.original_title , u.username, m.id, p.date_created, p.id
       ) n
-      order by n.date_created desc
+      order by n.votes desc
       limit ${limit} offset ${offset}
     `)
 
