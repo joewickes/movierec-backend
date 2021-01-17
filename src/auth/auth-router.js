@@ -34,7 +34,7 @@ authRouter
     AuthService.getUser(req.app.get('db'), parsedUN)
       .then(foundUser => {
         if (foundUser) {
-              AuthService.comparePasswords(req.body.password, foundUser.password)
+              AuthService.comparePasswords(parsedPwd, foundUser.password)
                 .then(comparedRes => {
                   if (comparedRes) {
                     const createdToken = AuthService.createToken(foundUser.username, {user_id: foundUser.id});
