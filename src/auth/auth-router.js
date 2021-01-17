@@ -43,7 +43,6 @@ authRouter
                     console.log('ct+', {createdToken: createdToken, userId: foundUser.id})
                     return res.status(200).json({createdToken: createdToken, userId: foundUser.id});
                   }
-                  
                 });
           
 

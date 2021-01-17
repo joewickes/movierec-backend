@@ -11,9 +11,10 @@ const AuthService = {
   },
   comparePasswords(password, hash) {
     bcrypt.compare(password, hash)
-      .then(comp => {
-        return comp;
-      });
+      .then(result => {
+        console.log('tf result', result)
+        return result;
+      })
     
   },
   createToken(subject, payload) {
