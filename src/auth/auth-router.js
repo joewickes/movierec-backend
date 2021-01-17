@@ -36,8 +36,11 @@ authRouter
         if (foundUser) {
               AuthService.comparePasswords(parsedPwd, foundUser.password)
                 .then(comparedRes => {
+                  console.log('cr', comparedRes);
                   if (comparedRes) {
                     const createdToken = AuthService.createToken(foundUser.username, {user_id: foundUser.id});
+                    console.log('ct', createdToken)
+                    console.log('ct+', {createdToken: createdToken, userId: foundUser.id})
                     return res.status(200).json({createdToken: createdToken, userId: foundUser.id});
                   }
                   
