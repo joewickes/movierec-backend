@@ -9,7 +9,6 @@ const jsonBodyParser = express.json()
 
 // Posts service object
 const PostsService = require('./posts-service')
-const votesServie = require('./../votes/votes-service');
 const VotesService = require('./../votes/votes-service');
 
 postsRouter
@@ -27,16 +26,18 @@ postsRouter
     }
 
     if (req.body.where === 'homePageSearch') {
+      console.log('A reqest body for homePageSearch', req.body)
       if (!req.body.title) {
         return res.status(400).json({error: 'Invalid title search'});
       }
 
-      return PostsService.searchPostsByTitle(req.app.get('db'), req.body.title, 10, 0)
+      return PostsService.searchPostsByTitle(req.app.get('db'), req.body.userId, req.body.title, 10, 0)
         .then(postRes => {
+          console.log('HERE is the post result from search by post title:',postRes);
           if (postRes.length === 0) {
             return res.status(404).json({error: 'No posts found with that title.'})
           } else {
-            res.json(postRes);
+            res.json(postRes.rows);
           }
         })
         .catch(next)
@@ -44,9 +45,9 @@ postsRouter
     }
 
     if (req.body.where === 'homePageFilter') {
-      return PostsService.searchPostsByGenre(req.app.get('db'), req.body.genre, 10, 0)
+      return PostsService.searchPostsByGenre(req.app.get('db'), req.body.userId, req.body.genre, 10, 0)
         .then(postRes => {
-          res.json(postRes);
+          res.json(postRes.rows);
         })
         .catch(next)
       ;
@@ -83,6 +84,9 @@ postsRouter
           if (response.length === 0) {
             console.log('no matching posts');
             res.status(404).json({message: 'No matching posts'})
+          } else {
+            console.log(response);
+            res.status(200).json(response)
           }
         })
         .catch(next)
