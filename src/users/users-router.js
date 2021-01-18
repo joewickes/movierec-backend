@@ -15,7 +15,7 @@ usersRouter
   .route('/')
   .post(jsonBodyParser, (req, res, next) => {
 
-    // Parse Username
+    // Parse Username 
     const parsedUN = Buffer
       .from(req.body.username, 'base64')
       .toString()

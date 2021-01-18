@@ -27,8 +27,6 @@ app.get('/', (req, res) => {
   res.send('Hello, movierec!');
 });
 
-console.log('doing stuff here');
-
 app.use('/api/movies', moviesRouter);
 app.use('/api/posts', postsRouter);
 app.use('/api/users', usersRouter);

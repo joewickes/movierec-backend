@@ -27,7 +27,6 @@ moviesRouter
 
     // Put data in a new movie object
     const newMovieObj = {original_title, year, genre};
-    console.log('new movie obj', newMovieObj);
     
     // Validate necessary keys
 
@@ -48,7 +47,6 @@ moviesRouter
 
           return PostsService.addPost(req.app.get('db'), newPostObj)
                   .then(response => {
-                    console.log('add the post successfully', response)
                     const voteObj = {
                       userid: req.body.user_id,
                       value: 1,
@@ -76,7 +74,6 @@ moviesRouter
     .get((req, res, next) => {
       MoviesService.getSingleMovie(req.app.get('db'), req.params.movie_id)
         .then(response => {
-          console.log('movie id single response', response)
           res.json(response[0]);
         })
     })

@@ -22,14 +22,12 @@ const VotesService = {
     ;
   },
   addVote(database, newVoteObj) {
-    console.log('addvote backend', newVoteObj)
 
     return database('votes') // into the votes table
       .insert(newVoteObj) // Insert the new vote object
       .returning('*') // returning the object
   },
   updateVote(database, id, updatedVoteObj) {
-    console.log('updateVoteObj', updatedVoteObj);
 
     return database('votes')
       .where('id', '=', id)

@@ -20,8 +20,6 @@ votesRouter
     ;
   })
   .post(jsonBodyParser, (req, res, next) => {
-    console.log('postING THIS', req.body);
-    console.log(req.body.voteData.value)
     const { value, post_id, userid } = req.body.voteData;
 
     // Put data in a new vote object
@@ -34,7 +32,6 @@ votesRouter
       // When successful, update state to reflect added vote
       .then(vote => {
 
-        console.log('vote to send back', vote);
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${vote.id}`))
@@ -44,7 +41,6 @@ votesRouter
     } else if (req.body.type === 'getVoteId') {
       VotesService.findVoteId(req.app.get('db'), userid, post_id)
         .then(returned => {
-          console.log(returned);
           return res
             .status(200)
             .location(path.posix.join(req.originalUrl, `/${returned.id}`))

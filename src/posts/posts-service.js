@@ -12,8 +12,6 @@ const PostsService = {
     if (!userId) {
       userId = 'null';
     }
-    console.log('all info from query', userId, limit, offset)
-    console.log('starting the crazy query');
 
     return database
       .raw(`
@@ -59,7 +57,6 @@ const PostsService = {
     `)
   },
   getSinglePost(database, id) {
-    console.log('movieid for seeing if it exists', id);
     return database
       .select('*')
       .from('posts')

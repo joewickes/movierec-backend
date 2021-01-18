@@ -10,12 +10,10 @@ const AuthService = {
     ;
   },
   comparePasswords(password, hash) {
-    console.log(bcrypt.compare(password, hash));
     return bcrypt.compare(password, hash);
     
   },
   createToken(subject, payload) {
-    console.log(subject, payload, config)
 
     return jwt.sign(payload, config.JWT_SECRET, {
       subject,

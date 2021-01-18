@@ -14,8 +14,6 @@ authRouter
   .route('/')
   .post(jsonBodyParser, (req, res, next) => {
 
-    console.log(req.body)
-
     // Parsed Username
     const parsedUN = Buffer
       .from(req.body.username, 'base64')
@@ -28,33 +26,20 @@ authRouter
       .toString()
     ;
 
-    console.log(parsedUN, parsedPwd, req.body.password)
-
     // Make sure username exists in DB FIX THIS
     AuthService.getUser(req.app.get('db'), parsedUN)
       .then(foundUser => {
         if (foundUser) {
-              AuthService.comparePasswords(parsedPwd, foundUser.password)
-                .then(comparedRes => {
-                  console.log('cr', comparedRes);
-                  if (comparedRes) {
-                    const createdToken = AuthService.createToken(foundUser.username, {user_id: foundUser.id});
-                    console.log('ct', createdToken)
-                    console.log('ct+', {createdToken: createdToken, userId: foundUser.id})
-                    return res.status(200).json({createdToken: createdToken, userId: foundUser.id});
-                  }
-                });
-          
-
-          // return res.status(200).json();
-        } 
-        // else {
-        //   const pwd = req.body.password;
-        //   const newData = {
-        //     username: parsedUN,
-        //     password: pwd,
-        //   }
-        // }
+          AuthService.comparePasswords(parsedPwd, foundUser.password)
+            .then(comparedRes => {
+              if (comparedRes) {
+                const createdToken = AuthService.createToken(foundUser.username, {user_id: foundUser.id});
+                return res.status(200).json({createdToken: createdToken, userId: foundUser.id});
+              }
+            })
+            
+          ;
+        }
       })
       .catch(next);
   })
