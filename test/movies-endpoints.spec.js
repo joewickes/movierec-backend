@@ -132,7 +132,7 @@ describe('Movies Endpoints', function() {
         .get('/api/movies/1')
         .expect(result => {
           expect(result.body.original_title).to.equal(movie.original_title);
-          expect(result.body.year).to.equal(movie.year);
+          expect(result.body.year).to.equal(movie.year)
         })
     })
   });
