@@ -28,8 +28,6 @@ moviesRouter
     // Put data in a new movie object
     const newMovieObj = {original_title, year, genre};
     
-    // Validate necessary keys
-
     // Insert movie
     MoviesService.addMovie(
       req.app.get('db'),
@@ -46,27 +44,29 @@ moviesRouter
           }
 
           return PostsService.addPost(req.app.get('db'), newPostObj)
-                  .then(response => {
-                    const voteObj = {
-                      userid: req.body.user_id,
-                      value: 1,
-                      post_id: response[0],
-                    }
-                    
-                    VotesService.addVote(req.app.get('db'), voteObj)
-                      .then(() => {
-                        res.status(201)
-                        .location(path.posix.join(req.originalUrl, `/${id}`))
-                        .end();
-                      })
-                  })
+            .then(response => {
+              const voteObj = {
+                userid: req.body.user_id,
+                value: 1,
+                post_id: response[0],
+              }
+              
+              VotesService.addVote(req.app.get('db'), voteObj)
+                .then(() => {
+                  res.status(201)
+                  .location(path.posix.join(req.originalUrl, `/${id}`))
+                  .end();
+                })
+                .catch(next)
+            })
+            .catch(next)
         } else {
           res
             .status(201).end()
+          ;
         }
-        
       })
-      .catch(next);
+    .catch(next);
   })
 
   moviesRouter

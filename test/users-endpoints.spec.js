@@ -17,13 +17,12 @@ describe('Users (and Auth) Endpoints', function() {
     });
 
     app.set('db', db);
-
   });
 
   after('disconnect from db', () => db.destroy());
 
-  before('clean the table', () => db.raw('truncate table users restart identity cascade')); // truncate table users restart identity cascade
-
+  before('clean the table', () => db.raw('truncate table users restart identity cascade'));
+  
   afterEach('cleanup', () => db.raw('truncate table users restart identity cascade'));
 
   describe('POST /api/users', function() {
@@ -85,10 +84,6 @@ describe('Users (and Auth) Endpoints', function() {
         ;    
       });
     });
-    
-    // context('Given no match in the database', function() {
-    //   else
-    // })
   });
 
   // Regex for JWT (all characters surrounding two periods) /^.*\..*\..*$/
