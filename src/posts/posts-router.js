@@ -15,7 +15,6 @@ postsRouter
   .route('/')
   .post(jsonBodyParser, (req, res, next) => {
     if (req.body.where === 'homePageGet') {
-
       PostsService.getPosts(req.app.get('db'), req.body.userId, 10, parseInt(req.body.offset))
         .then(posts => {
           return res.send(posts.rows);

@@ -1,14 +1,7 @@
 const usersRouter = require("../users/users-router")
 
 const PostsService = {
-  // getPosts(database, limit, offset) { // Knex instance to the database
-  //   return database 
-  //     .from('posts') // Queries posts table
-  //     .select('*') // Selects all posts
-      
-  //   ;
-  // },
-  getPosts(database, userId, limit, offset) { // Knex instnce to the database
+  getPosts(database, userId, limit, offset) {
     if (!userId) {
       userId = 'null';
     }

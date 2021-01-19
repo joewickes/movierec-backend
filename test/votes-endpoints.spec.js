@@ -1,13 +1,12 @@
 const { expect } = require('chai');
-const { response } = require('express');
-const { default: expectCt } = require('helmet/dist/middlewares/expect-ct');
+
 const knex = require('knex');
 const supertest = require('supertest');
 
 const app = require('../src/app');
 const config = require('../src/config');
 
-describe('Movies Endpoints', function() {
+describe('Votes Endpoints', function() {
 
   let db;
 
@@ -23,9 +22,9 @@ describe('Movies Endpoints', function() {
 
   after('disconnect from db', () => db.destroy());
 
-  before('clean the table', () => db.raw('truncate table movies restart identity cascade')); // truncate table users restart identity cascade
+  before('clean the table', () => db.raw('truncate table votes restart identity cascade')); // truncate table users restart identity cascade
 
-  afterEach('cleanup', () => db.raw('truncate table movies restart identity cascade'));
+  afterEach('cleanup', () => db.raw('truncate table votes restart identity cascade'));
 
   describe('POST /api/votes', function() {
 
