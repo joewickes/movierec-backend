@@ -201,6 +201,65 @@ describe('Movies Endpoints', function() {
   });
 
   describe('PATCH /api/votes/:vote_id', function() {
+    const user = {
+      username: "dGVzdFBAc3N3MHJk",
+      email: "dGVzdGVtYWlsQHRlc3RlbWFpbC5jb20=",
+      password: "dGVzdFBAc3N3MHJk"
+    }
 
-  });
+    const movie = {
+      original_title: 'Test Movie 1', 
+      year: 2003, 
+      genre: 'Thriller'
+    }
+
+    const post = {
+      title: 'asdf', 
+      movie_id: 1, 
+      user_id: 1
+    }
+
+    const vote = {
+      value: 0,
+      post_id: 1,
+      userid: 1
+    }
+
+    beforeEach('Populate users, movies, and posts tables', () => {
+      
+      return db
+        .into('users')
+        .insert(user)
+        .then(() => {
+          return db
+            .into('movies')
+            .insert(movie)
+            .then(() => {
+              return db
+                .into('posts')
+                .insert(post)
+                .then(() => {
+                  return db
+                    .into('votes')
+                    .insert(vote)
+                  ;
+                })
+              ;
+            })
+          ;
+        })
+      ;
+    })
+
+    it('should patch the vote and return a 204', () => {
+      return supertest(app)
+        .patch('/api/votes/1')
+        .send({
+          value: -1,
+          post_id: 1,
+          userid: 1
+        })
+        .expect(204)
+    })
+  }); 
 });
