@@ -13,13 +13,11 @@ votesRouter
   .route('/')
   .post(jsonBodyParser, (req, res, next) => {
     const { value, post_id, userid } = req.body.voteData;
-    console.log('rbvd ONE', req.body);
     // Put data in a new vote object
     const voteObj = {value, post_id, userid};
     
     if (req.body.type === 'addNewVote') {
       // Insert vote
-      console.log('rbvd', req.body.voteData);
       VotesService.addVote(req.app.get('db'), voteObj)
 
       // When successful, update state to reflect added vote

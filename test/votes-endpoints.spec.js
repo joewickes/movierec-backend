@@ -1,4 +1,6 @@
 const { expect } = require('chai');
+const { response } = require('express');
+const { default: expectCt } = require('helmet/dist/middlewares/expect-ct');
 const knex = require('knex');
 const supertest = require('supertest');
 
@@ -86,7 +88,6 @@ describe('Movies Endpoints', function() {
               userid: 1
             }
           }).expect(result => {
-            console.log(result.body);
             expect(result.status).to.equal(201);
             expect(result.body[0].value).to.equal(1);
             expect(result.body[0].userid).to.equal(1);
@@ -109,7 +110,6 @@ describe('Movies Endpoints', function() {
               userid: 1
             }
           }).expect(result => {
-            console.log(result.body);
             expect(result.status).to.equal(201);
             expect(result.body[0].value).to.equal(1);
             expect(result.body[0].userid).to.equal(1);
@@ -126,7 +126,6 @@ describe('Movies Endpoints', function() {
                 }
               })
               .expect(newVoteRes => {
-                console.log(newVoteRes);
                 expect(newVoteRes.status).to.equal(200);
                 expect(newVoteRes.body).to.equal(1);
               })
@@ -134,5 +133,74 @@ describe('Movies Endpoints', function() {
           });
       });
     });
+  });
+
+  describe('GET /api/votes/:vote_id', function() {
+    const user = {
+      username: "dGVzdFBAc3N3MHJk",
+      email: "dGVzdGVtYWlsQHRlc3RlbWFpbC5jb20=",
+      password: "dGVzdFBAc3N3MHJk"
+    }
+
+    const movie = {
+      original_title: 'Test Movie 1', 
+      year: 2003, 
+      genre: 'Thriller'
+    }
+
+    const post = {
+      title: 'asdf', 
+      movie_id: 1, 
+      user_id: 1
+    }
+
+    const vote = {
+      value: 1,
+      post_id: 1,
+      userid: 1
+    }
+
+    beforeEach('Populate users, movies, and posts tables', () => {
+      
+      return db
+        .into('users')
+        .insert(user)
+        .then(() => {
+          return db
+            .into('movies')
+            .insert(movie)
+            .then(() => {
+              return db
+                .into('posts')
+                .insert(post)
+                .then(() => {
+                  return db
+                    .into('votes')
+                    .insert(vote)
+                  ;
+                })
+              ;
+            })
+          ;
+        })
+      ;
+    })
+
+    it('Should return the vote at the specified id', () => {
+      return supertest(app)
+        .get('/api/votes/1')
+        .expect(responseobj => {
+          const {id, userid, value, post_id, date_created} = responseobj.body;
+          expect(id).to.equal(1);
+          expect(userid).to.equal(1);
+          expect(value).to.equal(1);
+          expect(post_id).to.equal(1);
+          expect(date_created).to.not.equal(null);
+        })
+    })
+  });
+
+  describe('PATCH /api/votes/:vote_id', function() {
+
   });
 });
