@@ -67,7 +67,6 @@ describe('Posts Endpoints', function() {
     before('clean the table', () => db.raw('truncate table posts restart identity cascade')); // truncate table users restart identity cascade
 
     beforeEach('Populate users, movies, and posts tables', () => {
-      console.log('populating now')
       return db
         .into('users')
         .insert(users)
