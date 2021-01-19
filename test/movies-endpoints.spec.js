@@ -117,5 +117,23 @@ describe('Movies Endpoints', function() {
 
   describe('POST /api/movies/:movie_id', function() {
 
+    const movie = {
+      original_title: 'A test movie 1', year: 2001, genre: 'Action'
+    }
+
+    before('populate the db', () => {
+      return db
+      .into('movies')
+      .insert(movie)
+    });
+
+    it('should return the movie information matching the id', () => {
+      return supertest(app)
+        .get('/api/movies/1')
+        .expect(result => {
+          expect(result.body.original_title).to.equal(movie.original_title);
+          expect(result.body.year).to.equal(movie.year);
+        })
+    })
   });
 });
