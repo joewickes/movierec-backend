@@ -1,7 +1,6 @@
 // Dependencies
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const path = require('path');
 
 // Use express methods for route and JSON parsing
 const usersRouter = express.Router()

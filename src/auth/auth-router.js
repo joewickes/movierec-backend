@@ -1,7 +1,5 @@
 // Dependencies
 const express = require('express');
-const path = require('path');
-const bcrypt = require('bcryptjs');
 
 // Use express methods for route and JSON parsing
 const authRouter = express.Router();
@@ -9,7 +7,7 @@ const jsonBodyParser = express.json();
 
 // Auth service object
 const AuthService = require('./auth-service');
-
+ 
 authRouter
   .route('/')
   .post(jsonBodyParser, (req, res, next) => {
@@ -26,7 +24,6 @@ authRouter
       .toString()
     ;
 
-    // Make sure username exists in DB FIX THIS
     AuthService.getUser(req.app.get('db'), parsedUN)
       .then(foundUser => {
         if (foundUser) {

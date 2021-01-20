@@ -1,31 +1,104 @@
-# Express Boilerplate!
+# MovieRec (API)
 
-This is a boilerplate project used for starting new projects!
+## Live Link: https://movierec-frontend.vercel.app/
 
-## Set up
+## Table of Contents
+- [Summary](##-summary)
+- [How To Use It](##-how-to-use-it)
+- [Technologies Used](##-technologies-used)
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+## Summary
+MovieRec is an app that lets you recommend movies to family, friends, or strangers! 
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+As a user you can:
+- Search for movie titles by keyword
+- Filter the top-rated movies for each genre
+- Sign up for an account which lets you 
+  - Log In
+  - Upvote on already recommended movies
+  - Downvote on already recommended movies
+  - Take away your previous vote on already recommended movies
+  - Add movie titles to our database (so that only one person can get the pride of recommending a movie for the first time)
+  - Add movie recommendations yourself
+  - Log out of your account
 
-## Scripts
 
-Start the application `npm start`
+## How To Use It
+Here are the different API endpoints, what kind of data they take, and what kind of end result to expect
 
-Start nodemon for the application `npm run dev`
+Endpoint: /api/auth
+- Request Type: POST
+- Expected Data Type: Object with user info
+- Happy Path Response: A 200 with JWT token and user ID
 
-Run the tests `npm test`
+-----
 
-## Deploying
+Endpoint: /api/movies
+- Request Type: GET
+- Expected Data Type: Search in query parameters
+- Happy Path Response: Array of 10 movies from the database containing the search word
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's main branch.
+Endpoint: /api/movies
+- Request Type: POST
+- Expected Data Type: Object with new movie info
+- Happy Path Response: 201
 
-SQL query for movie titles
-select *
-from public.imdb_movies_csv imc 
-where lower(original_title) like lower('%Karate Kid%');
+Endpoint: /api/movies/:movie_id
+- Request Type: GET
+- Expected Data Type: ID in query parameters
+- Happy Path Response: All data of the movie object with the matching ID
+
+-----
+
+Endpoint: /api/posts
+- Request Type: POST
+- Expected Data Type: Object with specified key 'where' denoting what returns and other necessary values
+- Happy Path Response: Either
+  - A list of 10 or less most recent posts
+  - A list of 10 or less posts that match a search
+  - A list of 10 or less posts that match a specified genre
+  - A 201 if successfully created a post
+
+Endpoint: /api/users/:post_id
+- Request Type: GET
+- Expected Data Type: ID in query parameter
+- Happy Path Response: 200 with the object with the specified ID
+
+-----
+
+Endpoint: /api/users
+- Request Type: POST
+- Expected Data Type: Object with new user info
+- Happy Path Response: 201
+
+-----
+
+Endpoint: /api/votes
+- Request Type: POST
+- Expected Data Type: Object with specified key 'type' denoting what returns and other necessary values
+- Happy Path Response: Either
+  - A 201 returning the created vote
+  - A 200 returning the ID of the vote
+
+Endpoint: /api/votes/:vote_id
+- Request Type: GET
+- Expected Data Type: ID in query parameters
+- Happy Path Response: 200 and the whole vote object that matches
+
+Endpoint: /api/votes/:vote_id
+- Request Type: PATCH
+- Expected Data Type: An object with new vote values
+- Happy Path Response: 204
+
+## Technologies Used
+- Bcrypt JS
+- Cors
+- DotENV
+- Express
+- Helmet
+- JWT
+- Knex
+- Postgrator
+- XSS
+- Tested with Mocha, Chai, and Supertest
+- Used Nodemon for the dev environment

@@ -110,12 +110,12 @@ describe('Movies Endpoints', function() {
     it('responds with a 201 when given a no', () => {
       return supertest(app)
         .post('/api/movies')
-        .send({"newMovieObj": newMovieObj, "no": "Yes", "user_id": 1}) // new movie object
+        .send({"newMovieObj": newMovieObj, "yn": "No", "user_id": 1}) // new movie object
         .expect(201) //201
     })
   });
 
-  describe('POST /api/movies/:movie_id', function() {
+  describe('GET /api/movies/:movie_id', function() {
 
     const movie = {
       original_title: 'A test movie 1', year: 2001, genre: 'Action'
