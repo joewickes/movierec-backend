@@ -2,6 +2,8 @@
 
 ## Live Link: https://movierec-frontend.vercel.app/
 
+## Front End Repo: https://github.com/joewickes/movierec-frontend
+
 ## Table of Contents
 - [Summary](##-summary)
 - [How To Use It](##-how-to-use-it)
