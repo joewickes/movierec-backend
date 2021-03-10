@@ -14,7 +14,9 @@ const AuthService = {
     console.log(hash);
     bcrypt.hash(parsedPwd, 12).then((r) => {
       console.log(r);
-      console.log(bcrypt.compare(password, hash))
+      if (r === hash) {
+        console.log('same');
+      }
     })
     
     
