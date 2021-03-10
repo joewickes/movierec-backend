@@ -24,13 +24,18 @@ authRouter
       .toString()
     ;
 
+    console.log('parsed both');
+
     AuthService.getUser(req.app.get('db'), parsedUN)
       .then(foundUser => {
         if (foundUser) {
+          console.log('found the user');
           AuthService.comparePasswords(parsedPwd, foundUser.password)
             .then(comparedRes => {
               if (comparedRes) {
+                console.log('compared the passwords')
                 const createdToken = AuthService.createToken(foundUser.username, {user_id: foundUser.id});
+                console.log('returning a 200');
                 return res.status(200).json({createdToken: createdToken, userId: foundUser.id});
               }
             })
