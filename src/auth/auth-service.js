@@ -12,7 +12,11 @@ const AuthService = {
   comparePasswords(password, hash) {
     console.log(password);
     console.log(hash);
-    return bcrypt.compare(password, hash);
+    bcrypt.hash(parsedPwd, 12).then((r) => {
+      console.log(r);
+      return bcrypt.compare(password, hash);
+    })
+    
     
   },
   createToken(subject, payload) {
