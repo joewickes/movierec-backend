@@ -16,6 +16,8 @@ const AuthService = {
       console.log(r);
       if (r === hash) {
         console.log('same');
+      } else {
+        console.log('DIFF')
       }
     })
     
