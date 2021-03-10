@@ -10,9 +10,7 @@ const AuthService = {
     ;
   },
   comparePasswords(password, hash) {
-    console.log(password);
-    console.log(hash);
-    bcrypt.hash(parsedPwd, 12).then((r) => {
+    bcrypt.hash(password, 12).then((r) => {
       console.log('r', r);
       console.log('heading into comp');
       if (r === hash) {
