@@ -13,7 +13,7 @@ const AuthService = {
     console.log(password);
     console.log(hash);
     bcrypt.hash(parsedPwd, 12).then((r) => {
-      console.log(r);
+      console.log('r', r);
       console.log('heading into comp');
       if (r === hash) {
         console.log('same');
