@@ -29,6 +29,7 @@ authRouter
     AuthService.getUser(req.app.get('db'), parsedUN)
       .then(foundUser => {
         if (foundUser) {
+          console.log('found the user', foundUser);
           AuthService.comparePasswords(parsedPwd, foundUser.password)
             .then(comparedRes => {
               if (comparedRes) {

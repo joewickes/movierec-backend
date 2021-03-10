@@ -18,6 +18,11 @@ const AuthService = {
       } else {
         console.log('DIFF')
       }
+    console.log(password);
+    console.log(hash);
+    bcrypt.hash(parsedPwd, 12).then((r) => {
+      console.log(r);
+      console.log(bcrypt.compare(password, hash))
     })
     
     
