@@ -10,21 +10,7 @@ const AuthService = {
     ;
   },
   comparePasswords(password, hash) {
-    bcrypt.hash(password, 12).then((r) => {
-      console.log('r', r);
-      console.log('heading into comp');
-      if (r === hash) {
-        console.log('same');
-      } else {
-        console.log('DIFF')
-      }
-    console.log(password);
-    console.log(hash);
-    bcrypt.hash(parsedPwd, 12).then((r) => {
-      console.log(r);
-      console.log(bcrypt.compare(password, hash))
-    })
-    
+    return bcrypt.compare(password, hash);
     
   },
   createToken(subject, payload) {
