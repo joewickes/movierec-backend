@@ -34,11 +34,13 @@ app.use('/api/auth', authRouter);
 app.use('/api/votes', votesRouter);
 
 app.use(function errorHandler(error, req, res, next) {
+  let response;
   if (NODE_ENV === 'production') {
     response = { error: {message: 'Server error'} }
   } else {
     response = { message: error.message, error }
   }
+  console.log(error);
   res.status(500).json(response)
 })
 
